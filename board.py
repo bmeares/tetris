@@ -14,4 +14,4 @@ def populate():
     # fill board with transparent squares
     for row in range(len(squares)):
         for col in range(WIDTH):
-            squares[row].append(Square(True, "yellow", row, col))
+            squares[row].append(Square(False, "none", row, col))
