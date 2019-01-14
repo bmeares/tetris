@@ -1,4 +1,4 @@
-import board, Canvas, utils, time, globs
+import board, Canvas, utils, time, globs, square
 from pieces import *
 
 def main():
@@ -17,6 +17,7 @@ def state():
             if utils.still_falling(globs.current_piece):
                 globs.current_piece.move_down()
             else:
+                globs.current_piece.apply_to_all(square.de_select, [])
                 utils.spawn_new()
         utils.actions(utils.get_dir())
 

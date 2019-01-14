@@ -1,5 +1,5 @@
 from square import Square
-import copy, utils
+import copy, utils, board
 
 SIZE = 4
 
@@ -14,33 +14,56 @@ class Piece:
             for j in range(SIZE):
                 self.squares[i].append(Square(False, "none", i, j))
 
-    def set_color(self, color):
+    def apply_to_squares(self, function, args=[]):
+        flipped = False
         for i in range(len(self.squares)):
             for j in range(len(self.squares[i])):
-                self.squares[i][j].color = color
+                if self.squares[i][j].pieceStatus:
+                    if(function(args, self.squares[i][j])):
+                        flipped = True
+        return flipped
+
+    def apply_to_all(self, function, args=[]):
+        flipped = False
+        for i in range(len(self.squares)):
+            for j in range(len(self.squares[i])):
+                if(function(args, self.squares[i][j])):
+                    flipped = True
+        return flipped
+
+    def collision(self):
+        # collision for just one square
+        def sq_collide(args, sq):
+            return (board.squares[sq.row + 1][sq.col].pieceStatus and not board.squares[sq.row + 1][sq.col].selected)
+
+        return self.apply_to_squares(sq_collide, [])
+
+
+    def set_color(self, color):
+        args = [color]
+        def sc(args, sq):
+            sq.color = args[0]
+        self.apply_to_squares(sc, args)
 
     def move_right(self):
         utils.reset_piece(self)
-        for i in range(len(self.squares)):
-            for j in range(len(self.squares[i])):
-                self.squares[i][j].col += 1
-
+        def mr(args, sq):
+            sq.col += 1
+        self.apply_to_all(mr)
         utils.insert_piece(self)
 
     def move_left(self):
         utils.reset_piece(self)
-        for i in range(len(self.squares)):
-            for j in range(len(self.squares[i])):
-                self.squares[i][j].col -= 1
-
+        def mr(args, sq):
+            sq.col -= 1
+        self.apply_to_all(mr)
         utils.insert_piece(self)
 
     def move_down(self):
         utils.reset_piece(self)
-        for i in range(len(self.squares)):
-            for j in range(len(self.squares[i])):
-                self.squares[i][j].row += 1
-
+        def mr(args, sq):
+            sq.row += 1
+        self.apply_to_all(mr)
         utils.insert_piece(self)
 
     def rotate(self):

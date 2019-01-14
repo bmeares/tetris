@@ -4,13 +4,13 @@ from square import Square
 class J_piece(Piece):
     def __init__(self):
         Piece.__init__(self)
-        self.set_color("b_blue")
 
         self.squares[0][2].pieceStatus = True
         self.squares[1][2].pieceStatus = True
         self.squares[2][2].pieceStatus = True
         self.squares[2][1].pieceStatus = True
 
+        self.set_color("b_blue")
         # [
         # [0, 0, 1, 0]
         # [0, 0, 1, 0]

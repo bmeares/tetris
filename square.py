@@ -3,12 +3,17 @@ import colors
 class Square:
     def __init__(self, pieceStatus, color, row, col):
         self.pieceStatus = pieceStatus
+        self.selected = False
         self.color = color
         self.row = row
         self.col = col
 #        preview
 
     def __str__(self):
+        if self.selected:
+            return colors.BRIGHT_CYAN_BG + "  " + colors.RESET
+
+
         if self.pieceStatus:
             if self.color == "blue":
                 return colors.DULL_BLUE_BG + "  " + colors.RESET
@@ -28,3 +33,9 @@ class Square:
         else:
             # TODO RESET THIS
             return colors.DULL_YELLOW_BG + "  " + colors.RESET
+
+def de_select(args, sq):
+    sq.selected = False
+
+def select(args, sq):
+    sq.selected = True

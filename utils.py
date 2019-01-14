@@ -1,6 +1,7 @@
-import board, Canvas, copy, globs, select
+import board, Canvas, copy, globs, select, square
 import sys, termios, tty, os, time, random
 import pieces
+
 def actions(dir):
     if (dir == "UP"):
         globs.current_piece.rotate()
@@ -46,18 +47,15 @@ def get_dir():
     elif ch == "\x1b[D":
         return "LEFT"
 
-def move_down(p):
-    reset_board()
-    for i in range(len(p.squares)):
-        for j in range(len(p.squares[i])):
-            p.squares[i][j].row += 1
-
-    insert_piece(p)
-
 def still_falling(p):
     bs = bottom_sq(p)
+
+    # if(p.collision()):
+    #     input("COLLISION!")
+
     if bs.row >= board.HEIGHT - 1:
         return False
+
     if board.squares[bs.row + 1][bs.col].pieceStatus:
         return False
     else:
@@ -79,6 +77,7 @@ def spawn_new():
         globs.current_piece = pieces.L_piece()
     elif num == 2:
         globs.current_piece = pieces.J_piece()
+    globs.current_piece.apply_to_squares(square.select, [])
 
     insert_piece(globs.current_piece)
 
@@ -89,6 +88,7 @@ def insert_piece(p):
                 new_row = p.squares[i][j].row
                 new_col = p.squares[i][j].col
                 board.squares[new_row][new_col] = copy.deepcopy(p.squares[i][j])
+                # board.squares[new_row][new_col].selected = False
 
 def reset_piece(p):
     for i in range(len(p.squares)):
@@ -98,6 +98,7 @@ def reset_piece(p):
                 col = p.squares[i][j].col
                 board.squares[row][col].pieceStatus = False
                 board.squares[row][col].color = "none"
+                board.squares[row][col].selected = False
 
 def reset_board():
     for row in range(len(board.squares)):

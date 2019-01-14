@@ -4,7 +4,6 @@ from square import Square
 class L_piece(Piece):
     def __init__(self):
         Piece.__init__(self)
-        self.set_color("b_red")
 
         self.squares[0][2].pieceStatus = True
         self.squares[1][2].pieceStatus = True
@@ -18,6 +17,7 @@ class L_piece(Piece):
         # [0, 0, 0, 0]
         # ]
 
+        self.set_color("b_red")
 
     # FOR TESTING ONLY! Printing individual pieces will break the board
     def __str__(self):
