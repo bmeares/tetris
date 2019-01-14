@@ -4,15 +4,18 @@ class Square:
     def __init__(self, pieceStatus, color, row, col):
         self.pieceStatus = pieceStatus
         self.selected = False
+        self.debug = False
         self.color = color
         self.row = row
         self.col = col
 #        preview
 
     def __str__(self):
-        if self.selected:
+        # highlight selected pieces for debugging
+        # if self.selected:
+        #     return colors.BRIGHT_CYAN_BG + "  " + colors.RESET
+        if self.debug:
             return colors.BRIGHT_CYAN_BG + "  " + colors.RESET
-
 
         if self.pieceStatus:
             if self.color == "blue":
@@ -21,12 +24,18 @@ class Square:
                 return colors.BRIGHT_BLUE_BG + "  " + colors.RESET
             elif self.color == "green":
                 return colors.DULL_GREEN_BG + "  " + colors.RESET
+            elif self.color == "b_green":
+                return colors.BRIGHT_GREEN_BG + "  " + colors.RESET
             elif self.color == "yellow":
                 return colors.DULL_YELLOW_BG + "  " + colors.RESET
+            elif self.color == "b_yellow":
+                return colors.BRIGHT_YELLOW_BG + "  " + colors.RESET
             elif self.color == "red":
                 return colors.DULL_RED_BG + "  " + colors.RESET
             elif self.color == "b_red":
                 return colors.BRIGHT_RED_BG + "  " + colors.RESET
+            elif self.color == "cyan":
+                return colors.DULL_CYAN_BG + "  " + colors.RESET
             else:
                 return colors.RESET + "  "
 

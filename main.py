@@ -3,7 +3,6 @@ from pieces import *
 
 def main():
     globs.start_time = time.time()
-    # input("input: ")
     state()
 
 
@@ -14,10 +13,11 @@ def state():
     while True:
         if (utils.elapsed_time() % 0.5 == 0):
             Canvas.draw_board()
-            if utils.still_falling(globs.current_piece):
+            if(not globs.current_piece.collision()):
                 globs.current_piece.move_down()
+                utils.insert_piece(globs.current_piece)
             else:
-                globs.current_piece.apply_to_all(square.de_select, [])
+                utils.de_select_piece(globs.current_piece)
                 utils.spawn_new()
         utils.actions(utils.get_dir())
 

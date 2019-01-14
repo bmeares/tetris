@@ -1,23 +1,23 @@
 from pieces import Piece
 from square import Square
 
-class L_piece(Piece):
+class S_piece(Piece):
     def __init__(self):
         Piece.__init__(self)
 
         self.squares[0][2].pieceStatus = True
         self.squares[1][2].pieceStatus = True
-        self.squares[2][2].pieceStatus = True
-        self.squares[2][3].pieceStatus = True
+        self.squares[1][1].pieceStatus = True
+        self.squares[0][3].pieceStatus = True
 
         # [
-        # [0, 0, 1, 0]
-        # [0, 0, 1, 0]
         # [0, 0, 1, 1]
+        # [0, 1, 1, 0]
+        # [0, 0, 0, 0]
         # [0, 0, 0, 0]
         # ]
 
-        self.set_color("green")
+        self.set_color("b_green")
 
     # FOR TESTING ONLY! Printing individual pieces will break the board
     def __str__(self):

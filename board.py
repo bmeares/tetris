@@ -18,13 +18,14 @@ def populate():
 
 """
 apply_to_board: calls function() for
-every square with a block in p on the
+every square with a square in p on the
 corresponding squares in board
 """
-def apply_to_board(p, function):
+def apply_to_board(p, function, args=[]):
+    global squares
     for i in range(len(p.squares)):
         for j in range(len(p.squares[i])):
             if p.squares[i][j].pieceStatus:
-                function(p.squares[i][j])
+                function(args, squares[p.squares[i][j].row][p.squares[i][j].col])
 
 # def

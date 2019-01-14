@@ -34,9 +34,35 @@ class Piece:
     def collision(self):
         # collision for just one square
         def sq_collide(args, sq):
-            return (board.squares[sq.row + 1][sq.col].pieceStatus and not board.squares[sq.row + 1][sq.col].selected)
+            # if not at the bottom, check if there's a piece below
+            if sq.row >= board.HEIGHT - 1:
+                return True
+            else:
+                return ((board.squares[sq.row + 1][sq.col].pieceStatus) and (not board.squares[sq.row + 1][sq.col].selected))
 
         return self.apply_to_squares(sq_collide, [])
+
+    def l_collision(self):
+        # collision for just one square
+        def l_sq_collide(args, sq):
+            # if not at the bottom, check if there's a piece below
+            if sq.col <= 0:
+                return True
+            else:
+                return ((board.squares[sq.row][sq.col - 1].pieceStatus) and (not board.squares[sq.row][sq.col - 1].selected))
+
+        return self.apply_to_squares(l_sq_collide, [])
+
+    def r_collision(self):
+        # collision for just one square
+        def r_sq_collide(args, sq):
+            # if not at the bottom, check if there's a piece below
+            if sq.col >= board.WIDTH - 1:
+                return True
+            else:
+                return ((board.squares[sq.row][sq.col + 1].pieceStatus) and (not board.squares[sq.row][sq.col + 1].selected))
+
+        return self.apply_to_squares(r_sq_collide, [])
 
 
     def set_color(self, color):
@@ -57,57 +83,39 @@ class Piece:
         def mr(args, sq):
             sq.col -= 1
         self.apply_to_all(mr)
-        utils.insert_piece(self)
 
     def move_down(self):
         utils.reset_piece(self)
         def mr(args, sq):
             sq.row += 1
         self.apply_to_all(mr)
-        utils.insert_piece(self)
 
     def rotate(self):
-        utils.reset_piece(self)
+        # utils.reset_piece(self)
         array_2d = self.squares
         list_of_tuples = zip(*array_2d[::-1])
         rotated = [list(elem) for elem in list_of_tuples]
 
-        global SIZE
-        N = SIZE
         mat = copy.deepcopy(self.squares)
+        mat = clockwise(mat)
 
-        # Consider all squares one by one
-        for x in range(0, int(N/2)):
+        for i in range(len(self.squares)):
+            for j in range(len(self.squares[i])):
+                row = self.squares[i][j].row
+                col = self.squares[i][j].col
+                mat[i][j].row = self.squares[i][j].row
+                mat[i][j].col = self.squares[i][j].col
+        self.squares = mat
 
-            # Consider elements in group
-            # of 4 in current square
-            for y in range(x, N-x-1):
+def clockwise(mat):
+    cols = [[], [], [], []]
+    for col in range(len(mat[0])):
+        for row in range(len(mat)):
+            cols[col].append(mat[row][col])
 
-                # store current cell in temp variable
-                temp = mat[x][y]
+    top_row = cols[0]
+    for i in range(len(cols)):
+        for j in range(len(cols)):
+            mat[i][j] = cols[i][len(cols[0]) - 1 - j]
 
-                # move values from right to top
-                mat[x][y] = mat[y][N-1-x]
-
-                # move values from bottom to right
-                mat[y][N-1-x] = mat[N-1-x][N-1-y]
-
-                # move values from left to bottom
-                mat[N-1-x][N-1-y] = mat[N-1-y][x]
-
-                # assign temp to left
-                mat[N-1-y][x] = temp
-
-        for i in range(len(array_2d)):
-            for j in range(len(array_2d[i])):
-                row = array_2d[i][j].row
-                col = array_2d[i][j].col
-                mat[i][j].row = array_2d[i][j].row
-                mat[i][j].col = array_2d[i][j].col
-                # print("row: " + str(row))
-                # print("col: " + str(col))
-                # input("\nHALT")
-                # print(rotated[2][0])
-                # input("HALT")
-                self.squares = mat
-        utils.insert_piece(self)
+    return mat
