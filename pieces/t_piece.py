@@ -5,16 +5,16 @@ class T_piece(Piece):
     def __init__(self):
         Piece.__init__(self)
 
-        self.squares[0][2].pieceStatus = True
-        self.squares[1][1].pieceStatus = True
         self.squares[1][2].pieceStatus = True
-        self.squares[1][3].pieceStatus = True
+        self.squares[2][1].pieceStatus = True
+        self.squares[2][2].pieceStatus = True
+        self.squares[2][3].pieceStatus = True
 
         self.set_color("blue")
         # [
+        # [0, 0, 0, 0]
         # [0, 0, 1, 0]
         # [0, 1, 1, 1]
-        # [0, 0, 0, 0]
         # [0, 0, 0, 0]
         # ]
 

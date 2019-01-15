@@ -18,7 +18,11 @@ def state():
                 utils.insert_piece(globs.current_piece)
             else:
                 utils.de_select_piece(globs.current_piece)
+                utils.clear_board()
+                print("DONE CLEARING")
+                # time.sleep(1)
                 utils.spawn_new()
+                print("SPAWNED")
         utils.actions(utils.get_dir())
 
 

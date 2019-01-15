@@ -1,6 +1,38 @@
 import board, Canvas, copy, globs, select, square
 import sys, termios, tty, os, time, random
-import pieces
+import pieces, colors
+
+def remove_sq(sq):
+    row = sq.row
+    col = sq.col
+    top_sq = copy.deepcopy(board.squares[row - 1][col])
+    board.squares[row][col] = top_sq
+    board.squares[row][col].row += 1
+    # board.squares[top_sq.row][top_sq.col].pieceStatus = False
+
+
+
+def clear_board():
+
+    def clear_line(row):
+        for i in range(board.WIDTH):
+            remove_sq(board.squares[row][i])
+
+    for row in board.squares:
+        ps_count = 0
+        for s in row:
+            if s.pieceStatus:
+                ps_count += 1
+        if ps_count == board.WIDTH:
+            print("ABOUT TO CLEAR!")
+            r = s.row
+            while r > 0:
+                clear_line(r)
+                print("cleared line " + str(r))
+                # input()
+                r -= 1
+            # Canvas.draw_board()
+
 
 def actions(dir):
     collided = globs.current_piece.collision()
@@ -124,9 +156,11 @@ def insert_piece(p):
     for i in range(len(p.squares)):
         for j in range(len(p.squares[i])):
             if p.squares[i][j].pieceStatus and p.squares[i][j].selected:
-                new_row = p.squares[i][j].row
-                new_col = p.squares[i][j].col
-                board.squares[new_row][new_col] = copy.deepcopy(p.squares[i][j])
+                # only if the square is visible on the board
+                if p.squares[i][j].row >= 0 and p.squares[i][j].col >= 0:
+                    new_row = p.squares[i][j].row
+                    new_col = p.squares[i][j].col
+                    board.squares[new_row][new_col] = copy.deepcopy(p.squares[i][j])
 
 def reset_piece(p):
     for i in range(len(p.squares)):

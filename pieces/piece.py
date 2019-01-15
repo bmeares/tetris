@@ -10,9 +10,11 @@ class Piece:
         for i in range(SIZE):
             self.squares.append([])
 
+        w_buff = int(int(board.WIDTH / 2) - ((SIZE / 2) + 1))
+
         for i in range(SIZE):
             for j in range(SIZE):
-                self.squares[i].append(Square(False, "none", i, j))
+                self.squares[i].append(Square(False, "none", (i - 1), j + w_buff))
 
     def apply_to_squares(self, function, args=[]):
         flipped = False

@@ -8,7 +8,6 @@ class Square:
         self.color = color
         self.row = row
         self.col = col
-#        preview
 
     def __str__(self):
         # highlight selected pieces for debugging

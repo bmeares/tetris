@@ -89,6 +89,7 @@ BRIGHT_GREEN_BG = "\033[102m"
 BRIGHT_MAGENTA_FG = "\033[95m"
 
 BLOCK = "█"
+BLINK = "\033[5m"
 
 def rgb_ansi(r,g,b,text):
     return "\x1b[38;2;" + str(r) + ";" + str(g) + ";" + str(b) + "m" + text + "\x1b[0m"
