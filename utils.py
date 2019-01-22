@@ -11,6 +11,13 @@ def remove_sq(sq):
     # board.squares[top_sq.row][top_sq.col].pieceStatus = False
 
 
+def check_loss():
+    for i in range(board.SPAWN):
+        for j in range(board.WIDTH):
+            if board.squares[i][j].pieceStatus and not board.squares[i][j].selected:
+                return True
+    return False
+
 
 def clear_board():
 
@@ -24,11 +31,12 @@ def clear_board():
             if s.pieceStatus:
                 ps_count += 1
         if ps_count == board.WIDTH:
-            print("ABOUT TO CLEAR!")
+            # print("ABOUT TO CLEAR!")
+            # input()
             r = s.row
             while r > 0:
                 clear_line(r)
-                print("cleared line " + str(r))
+                # print("cleared line " + str(r))
                 # input()
                 r -= 1
             # Canvas.draw_board()
@@ -72,13 +80,13 @@ def actions(dir):
 def elapsed_time():
     return round(time.time() - globs.start_time, 1)
 
-def get_dir():
+def get_dir(delay):
     fd = sys.stdin.fileno()
     old_settings = termios.tcgetattr(fd)
     ch = ""
     try:
         tty.setraw(sys.stdin.fileno())
-        i, o, e = select.select( [sys.stdin], [], [], 0.05 )
+        i, o, e = select.select( [sys.stdin], [], [], delay )
         if (i):
             ch = sys.stdin.read(3).strip()
 
@@ -133,22 +141,24 @@ def right_sq(p):
 
 def spawn_new():
     num = random.randint(0,6)
+    new_pc = None
     if num == 0:
-        globs.current_piece = pieces.T_piece()
+        new_pc = pieces.T_piece()
     elif num == 1:
-        globs.current_piece = pieces.L_piece()
+        new_pc = pieces.L_piece()
     elif num == 2:
-        globs.current_piece = pieces.J_piece()
+        new_pc = pieces.J_piece()
     elif num == 3:
-        globs.current_piece = pieces.O_piece()
+        new_pc = pieces.O_piece()
     elif num == 4:
-        globs.current_piece = pieces.S_piece()
+        new_pc = pieces.S_piece()
     elif num == 5:
-        globs.current_piece = pieces.Z_piece()
-    elif num == 6:
-        globs.current_piece = pieces.I_piece()
+        new_pc = pieces.Z_piece()
+    else:
+        new_pc = pieces.I_piece()
 
-    globs.current_piece.apply_to_squares(square.select, [])
+    new_pc.apply_to_squares(square.select, [])
+    globs.current_piece = new_pc
 
     insert_piece(globs.current_piece)
 
@@ -157,7 +167,7 @@ def insert_piece(p):
         for j in range(len(p.squares[i])):
             if p.squares[i][j].pieceStatus and p.squares[i][j].selected:
                 # only if the square is visible on the board
-                if p.squares[i][j].row >= 0 and p.squares[i][j].col >= 0:
+                if p.squares[i][j].row >= 0 and p.squares[i][j].col >= 0 and p.squares[i][j].col < board.WIDTH:
                     new_row = p.squares[i][j].row
                     new_col = p.squares[i][j].col
                     board.squares[new_row][new_col] = copy.deepcopy(p.squares[i][j])
@@ -168,9 +178,10 @@ def reset_piece(p):
             if p.squares[i][j].pieceStatus:
                 row = p.squares[i][j].row
                 col = p.squares[i][j].col
-                board.squares[row][col].pieceStatus = False
-                board.squares[row][col].color = "none"
-                board.squares[row][col].selected = False
+                board.squares[row][col] = square.boardSquare(row, col)
+                # board.squares[row][col].pieceStatus = False
+                # board.squares[row][col].color = "none"
+                # board.squares[row][col].selected = False
 
 def de_select_piece(p):
     board.apply_to_board(p, square.de_select, [])

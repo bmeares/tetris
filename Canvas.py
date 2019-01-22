@@ -5,9 +5,9 @@ import platform
 def draw_board():
     clear()
     out = "\n" + buffer()
-    for row in range(len(board.squares)):
-        for col in range(len(board.squares[row])):
-            out += str(board.squares[row][col])
+    for row in range(len(board.squares) - board.SPAWN):
+        for col in range(len(board.squares[row + board.SPAWN])):
+            out += str(board.squares[row + board.SPAWN][col])
         out += "\n" + buffer()
 
     print(out, end = "")

@@ -5,6 +5,7 @@ class Square:
         self.pieceStatus = pieceStatus
         self.selected = False
         self.debug = False
+        self.spawn = False
         self.color = color
         self.row = row
         self.col = col
@@ -15,6 +16,9 @@ class Square:
         #     return colors.BRIGHT_CYAN_BG + "  " + colors.RESET
         if self.debug:
             return colors.BRIGHT_CYAN_BG + "  " + colors.RESET
+
+        # if self.spawn:
+        #     return colors.BRIGHT_CYAN_BG + "  " + colors.RESET
 
         if self.pieceStatus:
             if self.color == "blue":
@@ -47,3 +51,7 @@ def de_select(args, sq):
 
 def select(args, sq):
     sq.selected = True
+
+class boardSquare(Square):
+    def __init__(self, row, col):
+        Square.__init__(self, False, "none", row, col)

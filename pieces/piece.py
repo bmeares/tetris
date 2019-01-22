@@ -14,7 +14,10 @@ class Piece:
 
         for i in range(SIZE):
             for j in range(SIZE):
-                self.squares[i].append(Square(False, "none", (i - 1), j + w_buff))
+                # self.squares[i].append(Square(False, "none", (i - 1), j + w_buff))
+                # self.squares[i].append(Square(False, "none", i, j + w_buff))
+                self.squares[i].append(Square(False, "none", i, j + w_buff))
+                # self.squares[i].append(Square(False, "none", i - 4, j + w_buff))
 
     def apply_to_squares(self, function, args=[]):
         flipped = False
@@ -78,7 +81,7 @@ class Piece:
         def mr(args, sq):
             sq.col += 1
         self.apply_to_all(mr)
-        utils.insert_piece(self)
+        # utils.insert_piece(self)
 
     def move_left(self):
         utils.reset_piece(self)

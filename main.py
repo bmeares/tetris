@@ -10,8 +10,11 @@ def state():
     board.populate()
     utils.spawn_new()
 
-    while True:
-        if (utils.elapsed_time() % 0.5 == 0):
+    while not utils.check_loss():
+        # print(utils.elapsed_time())
+        # thresh = round(utils.elapsed_time() % globs.delay, 2)
+        # print(thresh)
+        if (utils.elapsed_time() % globs.delay == 0):
             Canvas.draw_board()
             if(not globs.current_piece.collision()):
                 globs.current_piece.move_down()
@@ -19,11 +22,17 @@ def state():
             else:
                 utils.de_select_piece(globs.current_piece)
                 utils.clear_board()
-                print("DONE CLEARING")
+                # print("DONE CLEARING")
                 # time.sleep(1)
                 utils.spawn_new()
-                print("SPAWNED")
-        utils.actions(utils.get_dir())
+                # print("SPAWNED")
+            # time.sleep(0.1)
+
+        if globs.current_piece.collision():
+            Canvas.draw_board()
+            utils.actions(utils.get_dir(0.2))
+        else:
+            utils.actions(utils.get_dir(0.05))
 
 
 
