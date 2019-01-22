@@ -44,7 +44,7 @@ class Square:
 
         else:
             # TODO RESET THIS
-            return colors.DULL_YELLOW_BG + "  " + colors.RESET
+            return  " ."
 
 def de_select(args, sq):
     sq.selected = False
