@@ -6,6 +6,8 @@ def remove_sq(sq):
     row = sq.row
     col = sq.col
     top_sq = copy.deepcopy(board.squares[row - 1][col])
+    # if top_sq.pieceStatus:
+    #     top_sq.clear = True
     board.squares[row][col] = top_sq
     board.squares[row][col].row += 1
     # board.squares[top_sq.row][top_sq.col].pieceStatus = False

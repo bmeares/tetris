@@ -1,23 +1,38 @@
-import board
-import os
-import platform
+import board, os, platform, colors
 
 def draw_board():
     clear()
-    out = "\n" + buffer()
+    out = h_buffer() + w_buffer()
+    out += colors.BOX_TOP_LEFT
+    for i in range(board.WIDTH * 2):
+        out += colors.BOX_HORIZ
+    out += colors.BOX_TOP_RIGHT + "\n" + w_buffer()
     for row in range(len(board.squares) - board.SPAWN):
+        out += colors.BOX_VERT
         for col in range(len(board.squares[row + board.SPAWN])):
             out += str(board.squares[row + board.SPAWN][col])
-        out += "\n" + buffer()
+        out += colors.BOX_VERT + "\n" + w_buffer()
+
+    out += colors.BOX_BOTTOM_LEFT
+    for i in range(board.WIDTH * 2):
+        out += colors.BOX_HORIZ
+    out += colors.BOX_BOTTOM_RIGHT + "\n"
 
     print(out, end = "")
 
 
-def buffer():
+def w_buffer():
     b = int(os.get_terminal_size().columns / 2) - board.WIDTH
     out = ""
     for i in range(b):
         out += " "
+    return out
+
+def h_buffer():
+    b = int(os.get_terminal_size().lines / 2) - (int(board.HEIGHT / 2))
+    out = ""
+    for i in range(b):
+        out += "\n"
     return out
 
 def clear():

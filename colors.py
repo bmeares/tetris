@@ -89,6 +89,15 @@ BRIGHT_GREEN_BG = "\033[102m"
 BRIGHT_MAGENTA_FG = "\033[95m"
 
 BLOCK = "█"
+
+# BOX STUFF
+border_clr = DULL_CYAN_FG
+BOX_VERT = border_clr + "│" + RESET
+BOX_HORIZ = border_clr + "─" + RESET
+BOX_TOP_LEFT = border_clr + "┌" + RESET
+BOX_TOP_RIGHT = border_clr + "┐" + RESET
+BOX_BOTTOM_LEFT = border_clr + "└" + RESET
+BOX_BOTTOM_RIGHT = border_clr + "┘" + RESET
 BLINK = "\033[5m"
 
 def rgb_ansi(r,g,b,text):
