@@ -31,11 +31,10 @@ class Square:
                     if not globs.ascii:
                         return colors.BLOCK + colors.BLOCK
                     else:
-                        return "##"
+                        return "##" # returns only for -am
             else:
                 return "  "
 
-        # if globs.ascii
 
         out = ""
         block = "  "
@@ -43,7 +42,10 @@ class Square:
             out += colors.BLINK
 
         if self.preview:
-            block = "╳╳"
+            if globs.ascii:
+                block = "::"
+            else:
+                block = "╳╳"
             block = colors.DARK_BLACK_FG + block
 
             # print(block)
