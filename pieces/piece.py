@@ -6,6 +6,7 @@ SIZE = 4
 class Piece:
     def __init__(self):
         self.squares = []
+        self.preview = False
         global SIZE
         for i in range(SIZE):
             self.squares.append([])
@@ -43,7 +44,7 @@ class Piece:
             if sq.row >= board.HEIGHT - 1:
                 return True
             else:
-                return ((board.squares[sq.row + 1][sq.col].pieceStatus) and (not board.squares[sq.row + 1][sq.col].selected))
+                return ((board.squares[sq.row + 1][sq.col].pieceStatus) and (not board.squares[sq.row + 1][sq.col].selected) and (not board.squares[sq.row + 1][sq.col].preview))
 
         return self.apply_to_squares(sq_collide, [])
 
@@ -54,7 +55,7 @@ class Piece:
             if sq.col <= 0:
                 return True
             else:
-                return ((board.squares[sq.row][sq.col - 1].pieceStatus) and (not board.squares[sq.row][sq.col - 1].selected))
+                return ((board.squares[sq.row][sq.col - 1].pieceStatus) and (not board.squares[sq.row][sq.col - 1].selected) and (not board.squares[sq.row][sq.col - 1].preview))
 
         return self.apply_to_squares(l_sq_collide, [])
 
@@ -65,7 +66,7 @@ class Piece:
             if sq.col >= board.WIDTH - 1:
                 return True
             else:
-                return ((board.squares[sq.row][sq.col + 1].pieceStatus) and (not board.squares[sq.row][sq.col + 1].selected))
+                return ((board.squares[sq.row][sq.col + 1].pieceStatus) and (not board.squares[sq.row][sq.col + 1].selected) and (not board.squares[sq.row][sq.col + 1].preview))
 
         return self.apply_to_squares(r_sq_collide, [])
 
@@ -90,7 +91,8 @@ class Piece:
         self.apply_to_all(mr)
 
     def move_down(self):
-        utils.reset_piece(self)
+        if not self.preview:
+            utils.reset_piece(self)
         def mr(args, sq):
             sq.row += 1
         self.apply_to_all(mr)

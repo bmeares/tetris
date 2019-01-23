@@ -1,10 +1,15 @@
-import sys, select
+from pynput import keyboard
 
-print("You have 1 seconds to answer!")
+def on_press(key):
+    print('Key {} pressed.'.format(key))
 
-i, o, e = select.select( [sys.stdin], [], [], 0.5 )
+def on_release(key):
+    print('Key {} released.'.format(key))
+    if str(key) == 'Key.esc':
+        print('Exiting...')
+        return False
 
-if (i):
-  print("You said", sys.stdin.readline().strip())
-else:
-  print("You said nothing!")
+with keyboard.Listener(
+    on_press = on_press,
+    on_release = on_release) as listener:
+    listener.join()

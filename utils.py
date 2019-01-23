@@ -1,5 +1,5 @@
-import board, Canvas, copy, globs, select, square
-import sys, termios, tty, os, time, random
+import board, Canvas, copy, globs, square, random, time
+# import sys, termios, tty, os, time, random
 import pieces, colors
 
 def remove_sq(sq):
@@ -43,71 +43,6 @@ def clear_board():
                 r -= 1
             # Canvas.draw_board()
 
-
-def actions(dir):
-    collided = globs.current_piece.collision()
-
-    if (dir == "UP"):
-        if not collided:
-            temp_rotated_p = copy.deepcopy(globs.current_piece)
-            temp_rotated_p.rotate()
-            t_thru_r_wall = right_sq(temp_rotated_p).col >= board.WIDTH
-            t_thru_l_wall = left_sq(temp_rotated_p).col < 0
-
-            # if temp piece doesn't clip through walls
-            if (not t_thru_l_wall) and (not t_thru_r_wall):
-                reset_piece(globs.current_piece)
-                globs.current_piece.rotate()
-                insert_piece(globs.current_piece)
-                Canvas.draw_board()
-
-    elif (dir == "DOWN"):
-        if not collided:
-            globs.current_piece.move_down()
-            insert_piece(globs.current_piece)
-            Canvas.draw_board()
-
-    elif (dir == "LEFT"):
-        if not globs.current_piece.l_collision():
-            globs.current_piece.move_left()
-            insert_piece(globs.current_piece)
-            Canvas.draw_board()
-
-    elif (dir == "RIGHT"):
-        if not globs.current_piece.r_collision():
-            globs.current_piece.move_right()
-            insert_piece(globs.current_piece)
-            Canvas.draw_board()
-
-def elapsed_time():
-    return round(time.time() - globs.start_time, 1)
-
-def get_dir(delay):
-    fd = sys.stdin.fileno()
-    old_settings = termios.tcgetattr(fd)
-    ch = ""
-    try:
-        tty.setraw(sys.stdin.fileno())
-        i, o, e = select.select( [sys.stdin], [], [], delay )
-        if (i):
-            ch = sys.stdin.read(3).strip()
-
-    finally:
-        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-
-    if ch == "qqq":
-        # TODO uncomment this
-        # Canvas.clear()
-        exit()
-    elif ch == "\x1b[A":
-        return "UP"
-    elif ch == "\x1b[B":
-        return "DOWN"
-    elif ch == "\x1b[C":
-        return "RIGHT"
-    elif ch == "\x1b[D":
-        return "LEFT"
-
 def bottom_sq(p):
     bs = p.squares[0][0]
     for i in range(len(p.squares)):
@@ -140,8 +75,15 @@ def right_sq(p):
                 m_sq = s
     return m_sq
 
+def drop_to_bottom(p):
+    while not p.collision():
+        p.move_down()
+    return p
+    # insert_piece(p)
+    # globs.dropped = True
 
 def spawn_new():
+    globs.dropped = False
     num = random.randint(0,6)
     new_pc = None
     if num == 0:
@@ -193,3 +135,18 @@ def reset_board():
         for col in range(len(board.squares[row])):
             board.squares[row][col].pieceStatus = False
             board.squares[row][col].color = "yellow"
+
+def elapsed_time():
+    return round(time.time() - globs.start_time, 1)
+
+def met_preview(p):
+    return top_sq(globs.preview_pc).row == top_sq(p).row
+
+def generate_preview(p):
+    globs.preview_pc = copy.deepcopy(p)
+    globs.preview_pc.apply_to_squares(square.prev, [])
+    globs.preview_pc.preview = True
+    globs.preview_pc = drop_to_bottom(globs.preview_pc)
+    if met_preview(p):
+        return
+    insert_piece(globs.preview_pc)

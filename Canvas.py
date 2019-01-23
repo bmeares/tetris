@@ -1,7 +1,9 @@
-import board, os, platform, colors
+import board, os, platform, colors, utils, globs
 
 def draw_board():
     clear()
+    utils.generate_preview(globs.current_piece)
+
     out = h_buffer() + w_buffer()
     out += colors.BOX_TOP_LEFT
     for i in range(board.WIDTH * 2):
@@ -19,7 +21,8 @@ def draw_board():
     out += colors.BOX_BOTTOM_RIGHT + "\n"
 
     print(out, end = "")
-
+    if not utils.met_preview(globs.current_piece):
+        utils.reset_piece(globs.preview_pc)
 
 def w_buffer():
     b = int(os.get_terminal_size().columns / 2) - board.WIDTH

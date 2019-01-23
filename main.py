@@ -1,4 +1,4 @@
-import board, Canvas, utils, time, globs, square, sys, colors
+import board, Canvas, utils, time, globs, square, sys, colors, kb
 from pieces import *
 
 def main():
@@ -18,10 +18,13 @@ def state():
         # print(thresh)
         if (utils.elapsed_time() % globs.delay == 0):
             Canvas.draw_board()
+
             if(not globs.current_piece.collision()):
                 globs.current_piece.move_down()
                 utils.insert_piece(globs.current_piece)
+
             else:
+                # utils.reset_piece(globs.preview_pc)
                 utils.de_select_piece(globs.current_piece)
                 utils.clear_board()
                 # print("DONE CLEARING")
@@ -30,11 +33,12 @@ def state():
                 # print("SPAWNED")
             # time.sleep(0.1)
 
-        if globs.current_piece.collision():
+        # give player 0.2 seconds to make a last-second adjustment
+        if globs.current_piece.collision() and not globs.dropped:
             Canvas.draw_board()
-            utils.actions(utils.get_dir(0.2))
+            kb.actions(kb.get_dir(0.2))
         else:
-            utils.actions(utils.get_dir(0.05))
+            kb.actions(kb.get_dir(0.05))
 
 
 def parse_args(args):

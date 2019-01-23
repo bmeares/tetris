@@ -6,3 +6,5 @@ delay = 0.5
 delay_threshold = 0.025
 mono = False
 ascii = False
+dropped = False
+preview_pc = None

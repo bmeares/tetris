@@ -34,5 +34,3 @@ def apply_to_board(p, function, args=[]):
         for j in range(len(p.squares[i])):
             if p.squares[i][j].pieceStatus:
                 function(args, squares[p.squares[i][j].row][p.squares[i][j].col])
-
-# def
