@@ -1,10 +1,12 @@
-import board, Canvas, utils, time, globs, square
+import board, Canvas, utils, time, globs, square, sys, colors
 from pieces import *
 
 def main():
     globs.start_time = time.time()
+    if len(sys.argv):
+        parse_args(sys.argv)
+        colors.init_box()
     state()
-
 
 def state():
     board.populate()
@@ -35,6 +37,11 @@ def state():
             utils.actions(utils.get_dir(0.05))
 
 
+def parse_args(args):
+    args.pop(0) # remove main.py
+    s = "".join(args)
+    globs.ascii = ("a" in s)
+    globs.mono = ("m" in s)
 
 if __name__ == '__main__':
     main()

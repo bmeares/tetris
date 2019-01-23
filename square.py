@@ -1,4 +1,4 @@
-import colors
+import colors, globs
 
 class Square:
     def __init__(self, pieceStatus, color, row, col):
@@ -17,6 +17,12 @@ class Square:
         #     return colors.BRIGHT_CYAN_BG + "  " + colors.RESET
         if self.debug:
             return colors.BRIGHT_CYAN_BG + "  " + colors.RESET
+
+        if globs.mono:
+            if self.pieceStatus:
+                return colors.BLOCK + colors.BLOCK
+            else:
+                return "  "
 
         out = ""
         if self.clear:

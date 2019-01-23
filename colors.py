@@ -1,6 +1,4 @@
-import platform
-import os
-import globs
+import platform, os, globs
 
 def change_font_windows():
     import ctypes
@@ -89,16 +87,44 @@ BRIGHT_GREEN_BG = "\033[102m"
 BRIGHT_MAGENTA_FG = "\033[95m"
 
 BLOCK = "█"
+BLINK = "\033[5m"
 
 # BOX STUFF
 border_clr = DULL_CYAN_FG
-BOX_VERT = border_clr + "│" + RESET
-BOX_HORIZ = border_clr + "─" + RESET
-BOX_TOP_LEFT = border_clr + "┌" + RESET
-BOX_TOP_RIGHT = border_clr + "┐" + RESET
-BOX_BOTTOM_LEFT = border_clr + "└" + RESET
-BOX_BOTTOM_RIGHT = border_clr + "┘" + RESET
-BLINK = "\033[5m"
+BOX_VERT = border_clr + "║" + RESET
+BOX_HORIZ = border_clr + "═" + RESET
+BOX_TOP_LEFT = border_clr + "╔" + RESET
+BOX_TOP_RIGHT = border_clr + "╗" + RESET
+BOX_BOTTOM_LEFT = border_clr + "╚" + RESET
+BOX_BOTTOM_RIGHT = border_clr + "╝" + RESET
+
+def init_box():
+    global border_clr, BOX_VERT, BOX_HORIZ, BOX_TOP_LEFT, BOX_TOP_RIGHT, BOX_BOTTOM_LEFT, BOX_BOTTOM_RIGHT, RESET
+    if globs.mono:
+        border_clr = ""
+        RESET = ""
+        unicode_box()
+    if globs.ascii:
+        ascii_box()
+
+def ascii_box():
+    global border_clr, BOX_VERT, BOX_HORIZ, BOX_TOP_LEFT, BOX_TOP_RIGHT, BOX_BOTTOM_LEFT, BOX_BOTTOM_RIGHT, RESET
+    # border_clr = DULL_CYAN_FG
+    BOX_VERT = border_clr + "|" + RESET
+    BOX_HORIZ = border_clr + "-" + RESET
+    BOX_TOP_LEFT = border_clr + "+" + RESET
+    BOX_TOP_RIGHT = border_clr + "+" + RESET
+    BOX_BOTTOM_LEFT = border_clr + "+" + RESET
+    BOX_BOTTOM_RIGHT = border_clr + "+" + RESET
+
+def unicode_box():
+    global border_clr, BOX_VERT, BOX_HORIZ, BOX_TOP_LEFT, BOX_TOP_RIGHT, BOX_BOTTOM_LEFT, BOX_BOTTOM_RIGHT, RESET
+    BOX_VERT = border_clr + "║" + RESET
+    BOX_HORIZ = border_clr + "═" + RESET
+    BOX_TOP_LEFT = border_clr + "╔" + RESET
+    BOX_TOP_RIGHT = border_clr + "╗" + RESET
+    BOX_BOTTOM_LEFT = border_clr + "╚" + RESET
+    BOX_BOTTOM_RIGHT = border_clr + "╝" + RESET
 
 def rgb_ansi(r,g,b,text):
     return "\x1b[38;2;" + str(r) + ";" + str(g) + ";" + str(b) + "m" + text + "\x1b[0m"
