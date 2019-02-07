@@ -19,7 +19,7 @@ def state():
         #  if (utils.elapsed_time() % globs.delay == 0):
         t = str(utils.elapsed_time())
         #  print(t)
-        drop_nums = ['.3', '.6']
+        drop_nums = ['.0', '.3', '.6']
         if (any(x in t for x in drop_nums)):
             Canvas.draw_board()
 
