@@ -4,7 +4,7 @@ def draw_board():
     clear()
     utils.generate_preview(globs.current_piece)
 
-    out = h_buffer() + w_buffer()
+    out = score() + w_buffer()
     out += colors.BOX_TOP_LEFT
     for i in range(board.WIDTH * 2):
         out += colors.BOX_HORIZ
@@ -24,6 +24,12 @@ def draw_board():
     if not utils.met_preview(globs.current_piece):
         utils.reset_piece(globs.preview_pc)
 
+def score():
+    out = h_buffer() + w_buffer()
+    out += "SCORE: " + str(globs.score) + "\n"
+    return out
+
+
 def w_buffer():
     b = int(os.get_terminal_size().columns / 2) - board.WIDTH
     out = ""
@@ -32,7 +38,7 @@ def w_buffer():
     return out
 
 def h_buffer():
-    b = int(os.get_terminal_size().lines / 2) - (int(board.HEIGHT / 2))
+    b = int(os.get_terminal_size().lines / 2) - (int(board.HEIGHT / 2)) - 1 # NOTE 1 is score height
     out = ""
     for i in range(b):
         out += "\n"

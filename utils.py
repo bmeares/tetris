@@ -27,6 +27,7 @@ def clear_board():
         for i in range(board.WIDTH):
             remove_sq(board.squares[row][i])
 
+    rows_cleared = 0
     for row in board.squares:
         ps_count = 0
         for s in row:
@@ -36,12 +37,30 @@ def clear_board():
             # print("ABOUT TO CLEAR!")
             # input()
             r = s.row
+            rows_cleared += 1
             while r > 0:
                 clear_line(r)
                 # print("cleared line " + str(r))
                 # input()
                 r -= 1
             # Canvas.draw_board()
+    award_points(rows_cleared)
+
+def award_points(n):
+    if n == 0:
+        return
+    #  else:
+        #  print("n is : " + str(n))
+        #  input()
+    if n == 1:
+        globs.score += 40
+    elif n == 2:
+        globs.score += 100
+    elif n == 3:
+        globs.score += 300
+    elif n == 4:
+        globs.score += 1200
+
 
 def bottom_sq(p):
     bs = p.squares[0][0]
@@ -76,8 +95,12 @@ def right_sq(p):
     return m_sq
 
 def drop_to_bottom(p):
+    globs.distance_dropped = 0
     while not p.collision():
         p.move_down()
+        globs.distance_dropped += 1
+        #  print("distance_dropped is now " + str(globs.distance_dropped))
+
     return p
     # insert_piece(p)
     # globs.dropped = True

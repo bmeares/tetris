@@ -22,6 +22,7 @@ def actions(dir):
         if not collided:
             globs.current_piece.move_down()
             utils.insert_piece(globs.current_piece)
+            globs.score += 1
             Canvas.draw_board()
 
     elif (dir == "LEFT"):
@@ -39,6 +40,8 @@ def actions(dir):
     elif dir == "DROP":
         utils.drop_to_bottom(globs.current_piece)
         utils.insert_piece(globs.current_piece)
+        globs.score += globs.distance_dropped + 1
+        globs.distance_dropped = 0
         globs.dropped = True
         Canvas.draw_board()
 

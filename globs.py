@@ -8,3 +8,6 @@ mono = False
 ascii = False
 dropped = False
 preview_pc = None
+score = 0
+distance_dropped = 0
+

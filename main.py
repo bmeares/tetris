@@ -16,7 +16,11 @@ def state():
         # print(utils.elapsed_time())
         # thresh = round(utils.elapsed_time() % globs.delay, 2)
         # print(thresh)
-        if (utils.elapsed_time() % globs.delay == 0):
+        #  if (utils.elapsed_time() % globs.delay == 0):
+        t = str(utils.elapsed_time())
+        #  print(t)
+        drop_nums = ['.3', '.6']
+        if (any(x in t for x in drop_nums)):
             Canvas.draw_board()
 
             if(not globs.current_piece.collision()):
@@ -37,6 +41,9 @@ def state():
         if globs.current_piece.collision() and not globs.dropped:
             Canvas.draw_board()
             kb.actions(kb.get_dir(0.2))
+        # give player 0.5 seconds to slide piece once made contact
+        # TODO set timer, only stop accepting input once timer runs out
+        # reset timer when key is pressed
         else:
             kb.actions(kb.get_dir(0.05))
 
