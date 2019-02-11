@@ -26,9 +26,10 @@ def draw_board():
 
 def score():
     out = h_buffer() + w_buffer()
-    out += "SCORE: " + str(globs.score) + "\n"
+    out += "SCORE:" + str(globs.score).rjust(5) + " | LEVEL:" + str(globs.current_level).rjust(2)
+    out += '\n'
+    out += w_buffer() + 'LINES CLEARED:' + str(globs.lines_cleared).rjust(8) + '\n'
     return out
-
 
 def w_buffer():
     b = int(os.get_terminal_size().columns / 2) - board.WIDTH
@@ -38,7 +39,7 @@ def w_buffer():
     return out
 
 def h_buffer():
-    b = int(os.get_terminal_size().lines / 2) - (int(board.HEIGHT / 2)) - 1 # NOTE 1 is score height
+    b = int(os.get_terminal_size().lines / 2) - (int(board.HEIGHT / 2)) - 2 # NOTE 2 is score height
     out = ""
     for i in range(b):
         out += "\n"

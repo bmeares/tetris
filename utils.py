@@ -45,6 +45,7 @@ def clear_board():
                 r -= 1
             # Canvas.draw_board()
     award_points(rows_cleared)
+    globs.lines_cleared += rows_cleared
 
 def award_points(n):
     if n == 0:
@@ -104,6 +105,11 @@ def drop_to_bottom(p):
     return p
     # insert_piece(p)
     # globs.dropped = True
+
+def check_level():
+    # increase level when surpassed level * LINES_PER_LEVEL
+    if globs.lines_cleared >= globs.current_level * globs.LINES_PER_LEVEL:
+        globs.current_level += 1
 
 def spawn_new():
     globs.dropped = False

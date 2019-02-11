@@ -19,7 +19,7 @@ def state():
         #  if (utils.elapsed_time() % globs.delay == 0):
         t = str(utils.elapsed_time())
         #  print(t)
-        drop_nums = ['.0', '.3', '.6']
+        drop_nums = globs.drop_lists[globs.current_level - 1]
         if (any(x in t for x in drop_nums)):
             Canvas.draw_board()
 
@@ -35,6 +35,8 @@ def state():
                 # time.sleep(1)
                 utils.spawn_new()
                 # print("SPAWNED")
+                globs.num_placed += 1
+                utils.check_level()
             # time.sleep(0.1)
 
         # give player 0.2 seconds to make a last-second adjustment
