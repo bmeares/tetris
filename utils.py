@@ -50,17 +50,21 @@ def clear_board():
 def award_points(n):
     if n == 0:
         return
+    points = 0
     #  else:
         #  print("n is : " + str(n))
         #  input()
     if n == 1:
-        globs.score += 40
+        points = 40
     elif n == 2:
-        globs.score += 100
+        points = 100
     elif n == 3:
-        globs.score += 300
+        points = 300
     elif n == 4:
-        globs.score += 1200
+        points = 1200
+
+    points = int(points * globs.current_level)
+    globs.score += points
 
 
 def bottom_sq(p):

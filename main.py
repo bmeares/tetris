@@ -55,6 +55,11 @@ def parse_args(args):
     s = "".join(args)
     globs.ascii = ("a" in s)
     globs.mono = ("m" in s)
+    level = 1
+    for letter in s:
+        if letter.isdigit():
+            level = int(letter)
+    globs.current_level = level
 
 if __name__ == '__main__':
     main()
