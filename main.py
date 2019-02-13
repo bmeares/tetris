@@ -60,6 +60,8 @@ def parse_args(args):
         if letter.isdigit():
             level = int(letter)
     globs.current_level = level
+    if level == 0:
+        globs.current_level = 10
 
 if __name__ == '__main__':
     main()
